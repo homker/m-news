@@ -11,8 +11,9 @@ class spider_model:
 		self.page = 1
 		self.pages = []
 		self.enable = False
-	def GetPage(self,page):
-		myUrl = "http://m.qiushibaike.com/hot/page" + page
+		self.url = "http://www.ecjtu.net/html/ecjtunews1/"
+	def GetPage(self,url,page):
+		myUrl = url 
 		user_agent = 'Mozilla/4.0 (compatible; MSIE 5.5; Windows NT)'
 		headers = { 'User-Agent':user_agent }
 		req = urllib2.Request(myUrl, headers = headers)
