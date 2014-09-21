@@ -54,17 +54,19 @@ class parser_model(HTMLParser.HTMLParser):
 		if tag in self.handledtags:
 			for name,value in attrs:
 				if name == 'href':
-					if value.find('http://') = -1
-					print u'http://www.ecjtu.net'+value
-			self.processing = tag
+					if value.find('http://') == -1:
+						value = u'http://www.ecjtu.net'+value
+						self.linkaddr = value
+			self.precessing = tag
 
 	def handle_data(self,data):
 		if self.precessing:
+			#print self.precessing
 			self.linkstring += data
 			
 	def handle_endtag(self,tag):
 		if tag == self.precessing:
-			print self.linkstring.decode('utf-8')+':'+self.linkaddr
+			print self.linkstring+':'+self.linkaddr
 			self.precessing = None
 			self.linkstring = ''
 			
