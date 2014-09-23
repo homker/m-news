@@ -8,7 +8,7 @@
 		if( typeof href !== "undefined" && hash !== "" && href !== href.replace( hash,"" ) && hash.search( "/" ) !== -1 ){
 			//remove the hash from the link to allow normal loading of the page.
 			var newHref = href.replace( hash,"" );
-			$( this ).attr( "href", newHref );
+			$( this ).attr( "href", newHref ); 
 		}
 		ele = $( this );
 	});

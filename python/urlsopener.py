@@ -6,6 +6,7 @@ import re
 import thread
 import time
 import HTMLParser
+import json
 from htmlentitydefs import entitydefs
 
 class spider_model:
@@ -36,7 +37,7 @@ class spider_model:
 		
 	def Start(self):
 		self.enable = True
-		print u'loding...'
+		print u'spider works'
 		result = self.GetPage(self.url)
 		return result
 
@@ -48,6 +49,7 @@ class parser_model(HTMLParser.HTMLParser):
 		self.precessing = None
 		self.linkstring = ''
 		self.linkaddr = ''
+		self.content = []
 		HTMLParser.HTMLParser.__init__(self)
 		
 	def handle_starttag(self, tag, attrs):
@@ -55,8 +57,8 @@ class parser_model(HTMLParser.HTMLParser):
 			for name,value in attrs:
 				if name == 'href':
 					if value.find('http://') == -1:
-						value = u'http://www.ecjtu.net'+value
-						self.linkaddr = value
+						value = 'http://www.ecjtu.net'+value
+					self.linkaddr = value
 			self.precessing = tag
 
 	def handle_data(self,data):
@@ -66,7 +68,10 @@ class parser_model(HTMLParser.HTMLParser):
 			
 	def handle_endtag(self,tag):
 		if tag == self.precessing:
-			print self.linkstring+':'+self.linkaddr
+			q = self.linkstring
+			if q.find('...') == -1 and len(q) != 0 and q.find('more>>') == -1:
+				res = {'title':self.linkstring.encode('utf-8'),'url':self.linkaddr.encode('utf-8') }
+				self.content.append(res)
 			self.precessing = None
 			self.linkstring = ''
 			
@@ -89,12 +94,12 @@ class parser_model(HTMLParser.HTMLParser):
 		return self.linkaddr
 		
 		
-
-print u""" 开始嘛？quit退出"""
-print u'enter start'
-raw_input(' ')
-myModel = spider_model()
-page = myModel.Start()
-content = parser_model()
-content.feed(page)
+def start():
+	print u"""start work"""
+	myModel = spider_model()
+	page = myModel.Start()
+	content = parser_model()
+	content.feed(page)
+	json_code = json.dumps(content.content)
+	return json_code
 
