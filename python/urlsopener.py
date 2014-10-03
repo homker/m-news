@@ -101,5 +101,6 @@ def start():
 	content = parser_model()
 	content.feed(page)
 	json_code = json.dumps(content.content)
+	#print type(json_code);
 	return json_code
 
